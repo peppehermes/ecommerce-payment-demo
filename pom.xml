@@ -62,7 +62,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--        Data -->
+        <!-- Data -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -74,14 +74,19 @@
             <optional>true</optional>
         </dependency>
 
-        <!--        Swagger -->
+        <!-- Swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.22</version>
+        </dependency>
 
-        <!-- JUNIT 5 -->
+        <!-- Junit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
