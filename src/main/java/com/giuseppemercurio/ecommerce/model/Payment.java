@@ -12,6 +12,8 @@ import java.sql.Timestamp;
 @Table(name = "payment")
 @Data
 public class Payment {
+    // Using integer for the ID field for simplicity
+    // In a real-world application, a UUID or a more complex ID generation strategy would be used
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(accessMode = AccessMode.READ_ONLY)
@@ -19,14 +21,22 @@ public class Payment {
 
     @Column(name = "timestamp")
     @Schema(accessMode = AccessMode.READ_ONLY)
-    private Timestamp timestamp;
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+    // Using long for the sender and receiver IDs for simplicity
+    // In a real-world application, a more complex user management system would be used
     @Column(name = "sender_id", nullable = false)
-    private String senderId;
+    private long senderId;
 
     @Column(name = "receiver_id", nullable = false)
-    private String receiverId;
+    private long receiverId;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
+
+    public Payment(long senderId, long receiverId, BigDecimal amount) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.amount = amount;
+    }
 }

@@ -1,12 +1,11 @@
-# Use postgres/example user/password credentials
 version: '3.9'
 
 services:
 
-  db:
-    image: postgres
+  postgres:
+    image: 'postgres:latest'
     restart: always
-    # TODO remove this - expose port 5432 to host
+    # TODO remove this - expose port 5432 to host for using with dBeaver
     ports:
       - "5432:5432"
     # set shared memory limit when using docker-compose
@@ -14,7 +13,9 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
-      POSTGRES_PASSWORD: password
+      - "POSTGRES_DB=ecommerce"
+      - "POSTGRES_PASSWORD=password"
+      - "POSTGRES_USER=admin"
 
   adminer:
     image: adminer

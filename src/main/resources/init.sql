@@ -1,9 +1,0 @@
-DROP TABLE IF EXISTS payment;
-
-CREATE TABLE payment (
-    id SERIAL PRIMARY KEY,
-    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    sender_id VARCHAR(255) NOT NULL,
-    receiver_id VARCHAR(255) NOT NULL,
-    amount DECIMAL(19, 2) NOT NULL
-);
