@@ -3,6 +3,7 @@ package com.giuseppemercurio.ecommerce.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -26,12 +27,15 @@ public class Payment {
     // Using long for the sender and receiver IDs for simplicity
     // In a real-world application, a more complex user management system would be used
     @Column(name = "sender_id", nullable = false)
+    @NotEmpty
     private long senderId;
 
     @Column(name = "receiver_id", nullable = false)
+    @NotEmpty
     private long receiverId;
 
     @Column(name = "amount", nullable = false)
+    @NotEmpty
     private BigDecimal amount;
 
     public Payment(long senderId, long receiverId, BigDecimal amount) {

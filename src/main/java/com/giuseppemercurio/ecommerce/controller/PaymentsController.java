@@ -1,11 +1,14 @@
 package com.giuseppemercurio.ecommerce.controller;
 
+import com.giuseppemercurio.ecommerce.exception.PaymentNotFoundException;
 import com.giuseppemercurio.ecommerce.model.Payment;
 import com.giuseppemercurio.ecommerce.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/payments")
@@ -52,8 +55,8 @@ public class PaymentsController {
     @ResponseBody
     @CrossOrigin
     @GetMapping("/{id}")
-    public Payment getPayment(@PathVariable long id) {
-        return paymentService.getPaymentById(id);
+    public Optional<Payment> getPayment(@PathVariable long id) {
+        return Optional.ofNullable(paymentService.getPaymentById(id).orElseThrow(() -> new PaymentNotFoundException(id)));
     }
 
     // Use GET request to get all payments for a given sender (ordered by timestamp descending)

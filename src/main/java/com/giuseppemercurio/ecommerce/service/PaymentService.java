@@ -3,6 +3,7 @@ package com.giuseppemercurio.ecommerce.service;
 import com.giuseppemercurio.ecommerce.model.Payment;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public interface PaymentService {
 
@@ -13,7 +14,7 @@ public interface PaymentService {
     Iterable<Payment> getPayments();
 
     // Get a single payment by its ID
-    Payment getPaymentById(long id);
+    Optional<Payment> getPaymentById(long id);
 
     // Get all payments for a given sender or receiver (ordered by timestamp descending)
     Iterable<Payment> getPaymentsBySenderId(long senderId);

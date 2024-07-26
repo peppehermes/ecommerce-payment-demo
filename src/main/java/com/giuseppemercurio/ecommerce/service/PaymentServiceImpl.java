@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -32,18 +33,18 @@ public class PaymentServiceImpl implements PaymentService {
 
     // Get a single payment by its ID
     @Override
-    public Payment getPaymentById(long id) {
-        return paymentRepository.findById(id).orElse(null);
+    public Optional<Payment> getPaymentById(long id) {
+        return paymentRepository.findById(id);
     }
 
     // Get all payments for a given sender or receiver (ordered by timestamp descending)
     @Override
     public Iterable<Payment> getPaymentsBySenderId(long senderId) {
-        return paymentRepository.findAllBySenderId(senderId);
+        return paymentRepository.findPaymentsBySenderId(senderId, Sort.by(Sort.Direction.DESC, "timestamp"));
     }
 
     @Override
     public Iterable<Payment> getPaymentsByReceiverId(long receiverId) {
-        return paymentRepository.findAllByReceiverId(receiverId);
+        return paymentRepository.findPaymentsByReceiverId(receiverId, Sort.by(Sort.Direction.DESC, "timestamp"));
     }
 }

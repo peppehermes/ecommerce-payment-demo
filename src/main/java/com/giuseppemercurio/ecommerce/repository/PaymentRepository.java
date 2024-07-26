@@ -2,15 +2,14 @@ package com.giuseppemercurio.ecommerce.repository;
 
 import com.giuseppemercurio.ecommerce.model.Payment;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
-public interface PaymentRepository extends CrudRepository<Payment, Long> {
-    @Query(value = "SELECT * FROM Payment p where p.sender_id = ?1 ORDER BY p.timestamp DESC", nativeQuery = true)
-    Iterable<Payment> findAllBySenderId(long senderId);
+import java.util.List;
 
-    @Query(value = "SELECT * FROM Payment p where p.receiver_id = ?1 ORDER BY p.timestamp DESC", nativeQuery = true)
-    Iterable<Payment> findAllByReceiverId(long receiverId);
+public interface PaymentRepository extends ListCrudRepository<Payment, Long> {
+    List<Payment> findPaymentsBySenderId(long senderId, Sort timestamp);
 
-    Iterable<Payment> findAll(Sort timestamp);
+    List<Payment> findPaymentsByReceiverId(long receiverId, Sort timestamp);
+
+    List<Payment> findAll(Sort timestamp);
 }

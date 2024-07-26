@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres:16.3'
     restart: always
     # TODO remove this - expose port 5432 to host for using with dBeaver
     ports:

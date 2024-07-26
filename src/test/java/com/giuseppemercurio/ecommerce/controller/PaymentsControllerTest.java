@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
@@ -43,7 +44,7 @@ class PaymentsControllerTest {
         thirdPayment.setId(3);
         Payment fourthPayment = new Payment(2, 3, new BigDecimal("15.0"));
         fourthPayment.setId(4);
-        given(paymentService.getPaymentById(1)).willReturn(firstPayment);
+        given(paymentService.getPaymentById(1)).willReturn(Optional.of(firstPayment));
         given(paymentService.getPayments()).willReturn(List.of(firstPayment, secondPayment, thirdPayment, fourthPayment));
         given(paymentService.getPaymentsBySenderId(2)).willReturn(List.of(secondPayment, fourthPayment));
         given(paymentService.getPaymentsByReceiverId(1)).willReturn(List.of(secondPayment, thirdPayment));
@@ -56,7 +57,7 @@ class PaymentsControllerTest {
 
     // Test the createPayment method
     @Test
-    void createPaymentTest() throws Exception {
+    void createPayment() throws Exception {
         Payment payment = new Payment(1, 2, new BigDecimal("100.0"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/payments")
@@ -75,7 +76,7 @@ class PaymentsControllerTest {
 
     // Test the getPayments method
     @Test
-    void getPaymentsTest() throws Exception {
+    void getPayments() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/payments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -113,7 +114,7 @@ class PaymentsControllerTest {
 
     // Test the getPayment method
     @Test
-    void getPaymentTest() throws Exception {
+    void getPayment() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/payments/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
