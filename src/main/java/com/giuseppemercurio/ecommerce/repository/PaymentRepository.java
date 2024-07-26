@@ -1,15 +1,15 @@
 package com.giuseppemercurio.ecommerce.repository;
 
 import com.giuseppemercurio.ecommerce.model.Payment;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface PaymentRepository extends ListCrudRepository<Payment, Long> {
-    List<Payment> findPaymentsBySenderId(long senderId, Sort timestamp);
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
+    Optional<List<Payment>> findBySenderIdOrderByTimestampDesc(long senderId);
 
-    List<Payment> findPaymentsByReceiverId(long receiverId, Sort timestamp);
+    Optional<List<Payment>> findByReceiverIdOrderByTimestampDesc(long receiverId);
 
-    List<Payment> findAll(Sort timestamp);
+    List<Payment> findAllByOrderByTimestampDesc();
 }

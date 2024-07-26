@@ -3,10 +3,10 @@ package com.giuseppemercurio.ecommerce.service;
 import com.giuseppemercurio.ecommerce.model.Payment;
 import com.giuseppemercurio.ecommerce.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,8 +27,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     // Get all payments (ordered by timestamp descending)
     @Override
-    public Iterable<Payment> getPayments() {
-        return paymentRepository.findAll(Sort.by(Sort.Direction.DESC, "timestamp"));
+    public List<Payment> getPayments() {
+        return paymentRepository.findAllByOrderByTimestampDesc();
     }
 
     // Get a single payment by its ID
@@ -39,12 +39,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     // Get all payments for a given sender or receiver (ordered by timestamp descending)
     @Override
-    public Iterable<Payment> getPaymentsBySenderId(long senderId) {
-        return paymentRepository.findPaymentsBySenderId(senderId, Sort.by(Sort.Direction.DESC, "timestamp"));
+    public Optional<List<Payment>> getPaymentsBySenderId(long senderId) {
+        return paymentRepository.findBySenderIdOrderByTimestampDesc(senderId);
     }
 
     @Override
-    public Iterable<Payment> getPaymentsByReceiverId(long receiverId) {
-        return paymentRepository.findPaymentsByReceiverId(receiverId, Sort.by(Sort.Direction.DESC, "timestamp"));
+    public Optional<List<Payment>> getPaymentsByReceiverId(long receiverId) {
+        return paymentRepository.findByReceiverIdOrderByTimestampDesc(receiverId);
     }
 }

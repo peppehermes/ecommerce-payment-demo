@@ -1,6 +1,8 @@
 package com.giuseppemercurio.ecommerce.controller;
 
 import com.giuseppemercurio.ecommerce.exception.PaymentNotFoundException;
+import com.giuseppemercurio.ecommerce.exception.ReceiverIdNotFoundException;
+import com.giuseppemercurio.ecommerce.exception.SenderIdNotFoundException;
 import com.giuseppemercurio.ecommerce.model.Payment;
 import com.giuseppemercurio.ecommerce.service.PaymentService;
 import jakarta.validation.Valid;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,7 +43,7 @@ public class PaymentsController {
     @ResponseBody
     @CrossOrigin
     @GetMapping
-    public Iterable<Payment> getPayments() {
+    public List<Payment> getPayments() {
         return paymentService.getPayments();
     }
 
@@ -55,7 +58,7 @@ public class PaymentsController {
     @ResponseBody
     @CrossOrigin
     @GetMapping("/{id}")
-    public Optional<Payment> getPayment(@PathVariable long id) {
+    public Optional<Payment> getPaymentById(@PathVariable long id) {
         return Optional.ofNullable(paymentService.getPaymentById(id).orElseThrow(() -> new PaymentNotFoundException(id)));
     }
 
@@ -66,8 +69,8 @@ public class PaymentsController {
     @ResponseBody
     @CrossOrigin
     @GetMapping("/sender/{senderId}")
-    public Iterable<Payment> getPaymentsBySenderId(@PathVariable long senderId) {
-        return paymentService.getPaymentsBySenderId(senderId);
+    public Optional<List<Payment>> getPaymentsBySenderId(@PathVariable long senderId) {
+        return Optional.ofNullable(paymentService.getPaymentsBySenderId(senderId).orElseThrow(() -> new SenderIdNotFoundException(senderId)));
     }
 
     // Use GET request to get all payments for a given receiver (ordered by timestamp descending)
@@ -77,7 +80,7 @@ public class PaymentsController {
     @ResponseBody
     @CrossOrigin
     @GetMapping("/receiver/{receiverId}")
-    public Iterable<Payment> getPaymentsByReceiverId(@PathVariable long receiverId) {
-        return paymentService.getPaymentsByReceiverId(receiverId);
+    public Optional<List<Payment>> getPaymentsByReceiverId(@PathVariable long receiverId) {
+        return Optional.ofNullable(paymentService.getPaymentsByReceiverId(receiverId).orElseThrow(() -> new ReceiverIdNotFoundException(receiverId)));
     }
 }

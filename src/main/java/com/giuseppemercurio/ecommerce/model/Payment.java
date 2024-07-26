@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -12,6 +14,8 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "payment")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
     // Using integer for the ID field for simplicity
     // In a real-world application, a UUID or a more complex ID generation strategy would be used

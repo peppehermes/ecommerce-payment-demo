@@ -11,11 +11,11 @@ services:
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
       - "POSTGRES_DB=ecommerce"
-      - "POSTGRES_PASSWORD=password"
       - "POSTGRES_USER=admin"
+      - "POSTGRES_PASSWORD=password"
 
   adminer:
     image: adminer

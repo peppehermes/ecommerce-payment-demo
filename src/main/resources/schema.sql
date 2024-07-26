@@ -8,8 +8,3 @@ CREATE TABLE IF NOT EXISTS payment (
     receiver_id INTEGER NOT NULL,
     amount DECIMAL(19, 2) NOT NULL
 );
-
-CREATE TABLE IF NOT EXISTS account (
-    id SERIAL PRIMARY KEY,
-    balance DECIMAL(19, 2) DEFAULT 0;
-);

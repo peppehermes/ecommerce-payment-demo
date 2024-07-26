@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PaymentsController.class)
-class PaymentsControllerTest {
+class PaymentsControllerUnitTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -44,15 +44,18 @@ class PaymentsControllerTest {
         thirdPayment.setId(3);
         Payment fourthPayment = new Payment(2, 3, new BigDecimal("15.0"));
         fourthPayment.setId(4);
-        given(paymentService.getPaymentById(1)).willReturn(Optional.of(firstPayment));
-        given(paymentService.getPayments()).willReturn(List.of(firstPayment, secondPayment, thirdPayment, fourthPayment));
-        given(paymentService.getPaymentsBySenderId(2)).willReturn(List.of(secondPayment, fourthPayment));
-        given(paymentService.getPaymentsByReceiverId(1)).willReturn(List.of(secondPayment, thirdPayment));
+
+        when(paymentService.getPaymentById(1)).thenReturn(Optional.of(firstPayment));
+        when(paymentService.getPayments()).thenReturn(List.of(firstPayment, secondPayment, thirdPayment, fourthPayment));
+        when(paymentService.getPaymentsBySenderId(2)).thenReturn(Optional.of(List.of(secondPayment, fourthPayment)));
+        when(paymentService.getPaymentsByReceiverId(1)).thenReturn(Optional.of(List.of(secondPayment, thirdPayment)));
 
         // Value returned for the createPayment method
         Payment newPayment = new Payment(1, 2, new BigDecimal("100.0"));
         newPayment.setId(5);
-        given(paymentService.createPayment(1, 2, new BigDecimal("100.0"))).willReturn(newPayment);
+        when(paymentService.createPayment(1, 2, new BigDecimal("100.0"))).thenReturn(newPayment);
+
+        when(paymentService.getPaymentById(6)).thenReturn(Optional.empty());
     }
 
     // Test the createPayment method
@@ -126,6 +129,14 @@ class PaymentsControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.senderId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.receiverId").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.amount").value("100.0"));
+    }
+
+    @Test
+    void getPaymentNoContent() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/payments/6")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 
     // Test the getPaymentsBySender method
