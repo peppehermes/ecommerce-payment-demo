@@ -33,7 +33,8 @@ public class PaymentServiceImpl implements PaymentService {
             @CacheEvict(key = "#result.id", value = "payment"),
             @CacheEvict(key = "#result.senderId", value = "senderId"),
             @CacheEvict(key = "#result.receiverId", value = "receiverId"),
-            @CacheEvict(key = "'findAllPayments'", value = "payments")
+            @CacheEvict(key = "'findAllPayments'", value = "payments"),
+            @CacheEvict(key = "'suspiciousAccounts'", value = "suspiciousAccounts")
     })
     public Payment createPayment(long senderId, long receiverId, BigDecimal amount) {
         Payment payment = new Payment(senderId, receiverId, amount);
@@ -65,5 +66,11 @@ public class PaymentServiceImpl implements PaymentService {
     @Cacheable(key = "#receiverId", value = "receiverId")
     public Optional<List<Payment>> getPaymentsByReceiverId(long receiverId) {
         return paymentRepository.findByReceiverIdOrderByTimestampDesc(receiverId);
+    }
+
+    @Override
+    @Cacheable(key = "'suspiciousAccounts'", value = "suspiciousAccounts")
+    public Optional<List<Long>> getSuspiciousAccounts() {
+        return paymentRepository.findSuspiciousAccounts();
     }
 }

@@ -21,4 +21,6 @@ public interface PaymentService {
     Optional<List<Payment>> getPaymentsBySenderId(long senderId);
 
     Optional<List<Payment>> getPaymentsByReceiverId(long receiverId);
+
+    Optional<List<Long>> getSuspiciousAccounts();
 }

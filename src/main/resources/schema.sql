@@ -8,3 +8,6 @@ CREATE TABLE IF NOT EXISTS payment (
     receiver_id INTEGER NOT NULL,
     amount DECIMAL(19, 2) NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_sender_id ON payment(sender_id);
+CREATE INDEX IF NOT EXISTS idx_receiver_id ON payment(receiver_id);

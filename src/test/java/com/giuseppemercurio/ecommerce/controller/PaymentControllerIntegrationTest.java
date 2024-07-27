@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_CLASS;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -68,6 +69,15 @@ public class PaymentControllerIntegrationTest {
     public void testGetPaymentsByReceiverId() {
         Payment[] payments = restTemplate.getForObject("/api/v1/payments/receiver/1", Payment[].class);
         assertEquals(2, payments.length);
+    }
+
+    @Test
+    @Sql(scripts = "/suspicious_account_detector.sql", executionPhase = BEFORE_TEST_METHOD)
+    public void testSuspiciousAccountDetector() {
+        Long[] accounts = restTemplate.getForObject("/api/v1/payments/suspicious", Long[].class);
+        assertEquals(20, accounts[0]);
+        assertEquals(10, accounts[1]);
+        assertEquals(5, accounts.length);
     }
 
 }

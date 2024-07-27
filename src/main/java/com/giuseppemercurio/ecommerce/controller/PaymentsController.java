@@ -1,6 +1,7 @@
 package com.giuseppemercurio.ecommerce.controller;
 
-import com.giuseppemercurio.ecommerce.exception.PaymentNotFoundException;
+import com.giuseppemercurio.ecommerce.exception.NoPaymentFoundException;
+import com.giuseppemercurio.ecommerce.exception.PaymentIdNotFoundException;
 import com.giuseppemercurio.ecommerce.exception.ReceiverIdNotFoundException;
 import com.giuseppemercurio.ecommerce.exception.SenderIdNotFoundException;
 import com.giuseppemercurio.ecommerce.model.Payment;
@@ -56,7 +57,7 @@ public class PaymentsController {
     @ResponseBody
     @GetMapping("/{id}")
     public Optional<Payment> getPaymentById(@PathVariable long id) {
-        return Optional.ofNullable(paymentService.getPaymentById(id).orElseThrow(() -> new PaymentNotFoundException(id)));
+        return Optional.ofNullable(paymentService.getPaymentById(id).orElseThrow(() -> new PaymentIdNotFoundException(id)));
     }
 
     // Use GET request to get all payments for a given sender (ordered by timestamp descending)
@@ -77,5 +78,15 @@ public class PaymentsController {
     @GetMapping("/receiver/{receiverId}")
     public Optional<List<Payment>> getPaymentsByReceiverId(@PathVariable long receiverId) {
         return Optional.ofNullable(paymentService.getPaymentsByReceiverId(receiverId).orElseThrow(() -> new ReceiverIdNotFoundException(receiverId)));
+    }
+
+    // Use GET request to get suspicious accounts
+    // Add the @ResponseBody annotation to return the response body
+    // Add the @CrossOrigin annotation to allow cross-origin requests
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    @GetMapping("/suspicious")
+    public Optional<List<Long>> getPaymentsByReceiverId() {
+        return Optional.ofNullable(paymentService.getSuspiciousAccounts().orElseThrow(NoPaymentFoundException::new));
     }
 }
