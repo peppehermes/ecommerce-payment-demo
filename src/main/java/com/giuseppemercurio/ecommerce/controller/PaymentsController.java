@@ -29,7 +29,6 @@ public class PaymentsController {
     // Add the @CrossOrigin annotation to allow cross-origin requests
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    @CrossOrigin
     @PostMapping
     public Payment createPayment(@Valid @RequestBody Payment payment) {
         return paymentService.createPayment(payment.getSenderId(), payment.getReceiverId(), payment.getAmount());
@@ -41,7 +40,6 @@ public class PaymentsController {
     // Add the @ResponseStatus(HttpStatus.OK) annotation to return a 200 status code
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @CrossOrigin
     @GetMapping
     public List<Payment> getPayments() {
         return paymentService.getPayments();
@@ -56,7 +54,6 @@ public class PaymentsController {
     // Add the @CrossOrigin annotation to allow cross-origin requests
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @CrossOrigin
     @GetMapping("/{id}")
     public Optional<Payment> getPaymentById(@PathVariable long id) {
         return Optional.ofNullable(paymentService.getPaymentById(id).orElseThrow(() -> new PaymentNotFoundException(id)));
@@ -67,7 +64,6 @@ public class PaymentsController {
     // Add the @CrossOrigin annotation to allow cross-origin requests
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @CrossOrigin
     @GetMapping("/sender/{senderId}")
     public Optional<List<Payment>> getPaymentsBySenderId(@PathVariable long senderId) {
         return Optional.ofNullable(paymentService.getPaymentsBySenderId(senderId).orElseThrow(() -> new SenderIdNotFoundException(senderId)));
@@ -78,7 +74,6 @@ public class PaymentsController {
     // Add the @CrossOrigin annotation to allow cross-origin requests
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @CrossOrigin
     @GetMapping("/receiver/{receiverId}")
     public Optional<List<Payment>> getPaymentsByReceiverId(@PathVariable long receiverId) {
         return Optional.ofNullable(paymentService.getPaymentsByReceiverId(receiverId).orElseThrow(() -> new ReceiverIdNotFoundException(receiverId)));
