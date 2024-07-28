@@ -2,13 +2,15 @@ package com.giuseppemercurio.ecommerce.service;
 
 import com.giuseppemercurio.ecommerce.model.Payment;
 import com.giuseppemercurio.ecommerce.repository.PaymentRepository;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -72,5 +74,37 @@ public class PaymentServiceImpl implements PaymentService {
     @Cacheable(key = "'suspiciousAccounts'", value = "suspiciousAccounts")
     public Optional<List<Long>> getSuspiciousAccounts() {
         return paymentRepository.findSuspiciousAccounts();
+    }
+
+    Optional<List<Long>> findTopFiveSuspiciousAccounts() {
+        HashMap<Long, Set<Long>> suspiciousAccounts = new HashMap<>();
+        List<Payment> payments = paymentRepository.findAll();
+
+        for (Payment payment : payments) {
+            suspiciousAccounts.computeIfAbsent(payment.getSenderId(), k -> new HashSet<>()).add(payment.getReceiverId());
+            suspiciousAccounts.computeIfAbsent(payment.getReceiverId(), k -> new HashSet<>()).add(payment.getSenderId());
+        }
+
+        List<Long> topFiveSuspiciousAccounts = suspiciousAccounts.entrySet().stream()
+                .sorted((a, b) -> Integer.compare(b.getValue().size(), a.getValue().size()))
+                .limit(5)
+                .map(Map.Entry::getKey)
+                .toList();
+
+        return Optional.of(topFiveSuspiciousAccounts);
+    }
+
+    Optional<List<Long>> findTopFiveSuspiciousAccountsUsingGraph() {
+        Graph<Long, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+        paymentRepository.findAll().forEach(payment -> {
+            graph.addVertex(payment.getSenderId());
+            graph.addVertex(payment.getReceiverId());
+            graph.addEdge(payment.getSenderId(), payment.getReceiverId());
+        });
+
+        return Optional.of(graph.vertexSet().stream()
+                .sorted(Comparator.comparingInt(graph::degreeOf).reversed())
+                .limit(5)
+                .toList());
     }
 }

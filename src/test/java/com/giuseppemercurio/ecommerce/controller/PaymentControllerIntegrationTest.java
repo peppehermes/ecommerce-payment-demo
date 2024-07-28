@@ -23,7 +23,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "/data.sql", executionPhase = BEFORE_TEST_CLASS)
+@Sql(scripts = "/sql/data.sql", executionPhase = BEFORE_TEST_CLASS)
 @ActiveProfiles("test")
 public class PaymentControllerIntegrationTest {
 
@@ -72,7 +72,7 @@ public class PaymentControllerIntegrationTest {
     }
 
     @Test
-    @Sql(scripts = "/suspicious_account_detector.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "/sql/suspicious_account_detector.sql", executionPhase = BEFORE_TEST_METHOD)
     public void testSuspiciousAccountDetector() {
         Long[] accounts = restTemplate.getForObject("/api/v1/payments/suspicious", Long[].class);
         assertEquals(20, accounts[0]);

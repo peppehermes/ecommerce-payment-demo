@@ -15,18 +15,16 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findAllByOrderByTimestampDesc();
 
     @Query(value = """
-            SELECT account_id, SUM(payment_count) AS payments
+            SELECT account_id, COUNT(DISTINCT other_account_id) AS distinct_accounts
             FROM (
-                SELECT sender_id AS account_id, COUNT(*) AS payment_count
+                SELECT sender_id AS account_id, receiver_id AS other_account_id
                 FROM payment
-                GROUP BY sender_id
                 UNION ALL
-                SELECT receiver_id AS account_id, COUNT(*) AS payment_count
+                SELECT receiver_id AS account_id, sender_id AS other_account_id
                 FROM payment
-                GROUP BY receiver_id
             ) AS combined
             GROUP BY account_id
-            ORDER BY payments DESC
+            ORDER BY distinct_accounts DESC
             LIMIT 5""", nativeQuery = true)
     Optional<List<Long>> findSuspiciousAccounts();
 }

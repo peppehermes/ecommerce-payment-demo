@@ -23,7 +23,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-@Sql(scripts = "/data.sql", executionPhase = BEFORE_TEST_CLASS)
+@Sql(scripts = "/sql/data.sql", executionPhase = BEFORE_TEST_CLASS)
 public class PaymentRepositoryTest {
 
     @Container
