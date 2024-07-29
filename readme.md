@@ -1,5 +1,11 @@
 ## E-commerce payment system
-To run the project, just run `docker compose up` in the root directory of the project.
+To run the project, just run
+```
+.\mvnw spring-boot:build-image
+docker compose build
+docker compose up
+```
+in the root directory of the project.
 
 The project will be available at `http://localhost:8000`.
 
