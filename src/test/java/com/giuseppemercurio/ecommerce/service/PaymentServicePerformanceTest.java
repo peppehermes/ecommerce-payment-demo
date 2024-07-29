@@ -1,5 +1,6 @@
 package com.giuseppemercurio.ecommerce.service;
 
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -27,6 +28,10 @@ public class PaymentServicePerformanceTest {
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.3");
+
+    @Container
+    @ServiceConnection
+    static RedisContainer redis = new RedisContainer("redis:7.2.5-alpine");
 
     @Autowired
     private PaymentServiceImpl paymentService;

@@ -1,5 +1,6 @@
 package com.giuseppemercurio.ecommerce.service;
 
+import com.giuseppemercurio.ecommerce.exception.SameSenderReceiverException;
 import com.giuseppemercurio.ecommerce.model.Payment;
 import com.giuseppemercurio.ecommerce.repository.PaymentRepository;
 import org.jgrapht.Graph;
@@ -39,6 +40,10 @@ public class PaymentServiceImpl implements PaymentService {
             @CacheEvict(key = "'suspiciousAccounts'", value = "suspiciousAccounts")
     })
     public Payment createPayment(long senderId, long receiverId, BigDecimal amount) {
+        if (senderId == receiverId) {
+            throw new SameSenderReceiverException();
+        }
+
         Payment payment = new Payment(senderId, receiverId, amount);
         return paymentRepository.save(payment);
     }
@@ -76,6 +81,7 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findSuspiciousAccounts();
     }
 
+    // The following are two alternative implementations of the suspicious account detector
     Optional<List<Long>> findTopFiveSuspiciousAccounts() {
         HashMap<Long, Set<Long>> suspiciousAccounts = new HashMap<>();
         List<Payment> payments = paymentRepository.findAll();

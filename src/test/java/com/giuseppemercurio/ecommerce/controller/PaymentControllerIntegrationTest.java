@@ -1,12 +1,15 @@
 package com.giuseppemercurio.ecommerce.controller;
 
 import com.giuseppemercurio.ecommerce.model.Payment;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -16,7 +19,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_CLASS;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
@@ -30,6 +32,10 @@ public class PaymentControllerIntegrationTest {
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.3");
+
+    @Container
+    @ServiceConnection
+    static RedisContainer redis = new RedisContainer("redis:7.2.5-alpine");
 
     @Autowired
     TestRestTemplate restTemplate;
@@ -55,8 +61,8 @@ public class PaymentControllerIntegrationTest {
 
     @Test
     public void testGetPaymentByIdNotFound() {
-        Payment payment = restTemplate.getForObject("/api/v1/payments/100", Payment.class);
-        assertNull(payment);
+        ResponseEntity<Payment> response = restTemplate.getForEntity("/api/v1/payments/100", Payment.class);
+        assertEquals(response.getStatusCode(), HttpStatus.NO_CONTENT);
     }
 
     @Test

@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "cd079cef-8d81-4f1b-919e-7c0aea77d47d",
-		"name": "cleafy-ecommerce",
+		"_postman_id": "e2afed54-7ca8-457e-ad2d-0a9db6fa5831",
+		"name": "cleafy-ecommerce.docker",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37268112"
 	},
@@ -72,11 +72,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/v1/payments",
+					"raw": "localhost:8000/api/v1/payments",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -115,11 +115,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/v1/payments",
+					"raw": "localhost:8000/api/v1/payments",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -194,11 +194,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/payments",
+					"raw": "localhost:8000/api/v1/payments",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -264,11 +264,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/payments/:id",
+					"raw": "localhost:8000/api/v1/payments/:id",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -306,11 +306,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/payments/:id",
+					"raw": "localhost:8000/api/v1/payments/:id",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -392,11 +392,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/payments/sender/:senderId",
+					"raw": "localhost:8000/api/v1/payments/sender/:senderId",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -475,11 +475,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/payments/receiver/:receiverId",
+					"raw": "localhost:8000/api/v1/payments/receiver/:receiverId",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -522,11 +522,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/payments/suspicious",
+					"raw": "localhost:8000/api/v1/payments/suspicious",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8000",
 					"path": [
 						"api",
 						"v1",
